@@ -11,6 +11,12 @@ loadEventListeners();
 function loadEventListeners() {
 	//Add task
 	form.addEventListener('submit', addTask);
+	//remove task
+	taskList.addEventListener('click', removeTask);
+
+	clearBtn.addEventListener('click', clearTask);
+
+	filter.addEventListener('keyup', filterTask);
 }
 function addTask(e) {
 	if (taskInput.value === '') {
@@ -29,7 +35,34 @@ function addTask(e) {
 	li.appendChild(link);
 	taskList.appendChild(li);
 	taskInput.value = '';
-
-	// console.log(li);
 	e.preventDefault();
+}
+
+//delete task
+function removeTask(e) {
+	if (e.target.parentElement.classList.contains('delete-item')) {
+		if (confirm('Confirm deletion')) {
+			e.target.parentElement.parentElement.remove();
+		}
+	}
+}
+
+//clear tasks
+function clearTask(e) {
+	while (taskList.firstChild) {
+		taskList.removeChild(taskList.firstChild);
+	}
+}
+//Filter tasks
+function filterTask(e) {
+	const text = e.target.value.toLowerCase();
+
+	document.querySelectorAll('.collection-item').forEach(function(task) {
+		const item = task.firstChild.textContent;
+		if (item.toLowerCase().indexOf(text) != -1) {
+			task.style.display = 'block';
+		} else {
+			task.style.display = 'none';
+		}
+	});
 }
